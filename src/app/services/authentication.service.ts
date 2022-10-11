@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -25,12 +25,18 @@ export class AuthenticationService {
         return headers;
     }
 
+    initBasicHeaders(): HttpHeaders {
+        const headers = new HttpHeaders()
+            .set('X-Auth-Client', 'client1')
+        return headers;
+    }
+
     login(username: string, password: string) {
         return this.http.post<any>(`${environment.apiUrl}/authenticate`, {}, { headers: this.initLoginHeaders(username, password) })
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
                 if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    // store user details and jwt token in session storage to keep user logged in between page refreshes
                     sessionStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
                 }
@@ -39,8 +45,12 @@ export class AuthenticationService {
             }));
     }
 
+    signup(userObj: any) {
+        return this.http.post<any>(`${environment.apiUrl}/signup`, { ...userObj }, { headers: this.initBasicHeaders() });
+    }
+
     logout() {
-        // remove user from local storage to log user out
+        // remove user from session storage to log user out
         sessionStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
     }

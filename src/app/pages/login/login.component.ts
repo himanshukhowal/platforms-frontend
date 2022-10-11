@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   returnUrl: string;
   signinForm: FormGroup;
   submitted = false;
+  userId: string;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+    this.userId = this.route.snapshot.queryParams['userId'];
     if (this.authenticationService.currentUserValue && this.authenticationService.currentUserValue.token) {
       this.router.navigate([this.returnUrl]);
     }

@@ -13,6 +13,7 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { ToastrModule } from 'ngx-toastr';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -24,7 +25,8 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
     NgbModule,
     ClipboardModule,
     NgxUiLoaderModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot()
   ],
   declarations: [
     DashboardComponent,
